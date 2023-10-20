@@ -15,6 +15,14 @@ import java.util.List;
  *
  * Estudio lo que pasa e intentamos corregirlo.
  */
+
+/**
+ * Inconvenientes de Synchronized
+ * 1º. Los demas hilos se quedan bloqueados esperando al synchronized y no se pueden INTERRUMPIR
+ * 2º. No hay información de si el objeto esta disponible, quien tiene el bloqueo.
+ * 3º. No es FCFS, no hay orden para obtener el bloqueo, es decir, los hilos que están esperando al bloqueo se
+ *     ejecutarán dependiendo de factores externos.
+ */
 public class Main {
 
     public static void main(String[] args) {

@@ -31,22 +31,24 @@ public class MyProducer implements Runnable{
     public void run() {
         Random random = new Random();
         String[] nums = {"1", "2", "3", "4", "5"};
-        synchronized (buffer){
-            for (String n : nums){
-                System.out.println(color + "Ading..." + n);
+
+        for (String n : nums){
+            System.out.println(color + "Ading..." + n);
+            synchronized (buffer){
                 buffer.add(n);
-
-                try {
-                    Thread.sleep(random.nextInt(1000));
-                } catch (InterruptedException e) {
-                    System.out.println(color + "Procucer interrumpido" );
-                }
             }
-            System.out.println(color + "Final de fichero");
-
-            buffer.add("-1");
-            System.out.println(buffer);
+            try {
+                Thread.sleep(random.nextInt(1000));
+            } catch (InterruptedException e) {
+                System.out.println(color + "Procucer interrumpido" );
+            }
         }
+        System.out.println(color + "Final de fichero");
+
+        synchronized (buffer){
+            buffer.add("-1");
+        }
+        System.out.println(buffer);
 
     }
 }

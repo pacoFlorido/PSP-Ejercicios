@@ -28,15 +28,15 @@ public class MyConsumer implements Runnable{
     @Override
     public void run() {
         while (true){
-            if (buffer.isEmpty()){
-                continue;
-            } else if(buffer.get(0).equals("-1")){
-                System.out.println(color + "Final de Fichero");
-                break;
-            } else {
-                for (String n: buffer){
-                    System.out.println(color + "Mostrando..." + n);
-                    buffer.remove(n);
+            synchronized (buffer){
+                if (buffer.isEmpty()){
+                    continue;
+                }
+                if(buffer.get(0).equals("-1")){
+                    System.out.println(color + "Final de Fichero");
+                    break;
+                } else {
+                    System.out.println(color + "Mostrando y eliminando..." + buffer.remove(0));
                 }
             }
         }

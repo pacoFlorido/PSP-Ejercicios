@@ -16,20 +16,16 @@ import java.util.List;
  * Estudio lo que pasa e intentamos corregirlo.
  */
 public class Main {
+
     public static void main(String[] args) {
         List<String> buffer = new ArrayList<>();
 
-        MyProducer p1 = new MyProducer(buffer, ThreadColor.ANSI_RED);
-        MyProducer p2 = new MyProducer(buffer,ThreadColor.ANSI_BLUE);
-        MyConsumer c = new MyConsumer(buffer,ThreadColor.ANSI_GREEN);
+        MyProducer p = new MyProducer(buffer, ThreadColor.ANSI_RED);
+        MyConsumer c1 = new MyConsumer(buffer,ThreadColor.ANSI_BLUE);
+        MyConsumer c2 = new MyConsumer(buffer,ThreadColor.ANSI_GREEN);
 
-        Thread t1 = new Thread(p1);
-        Thread t2 = new Thread(p2);
-        Thread t3 = new Thread(c);
-
-        t1.start();
-        t2.start();
-        t3.start();
-
+        new Thread(p).start();
+        new Thread(c1).start();
+        new Thread(c2).start();
     }
 }

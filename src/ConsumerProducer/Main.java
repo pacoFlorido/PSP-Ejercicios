@@ -4,6 +4,7 @@ import ExplicacionHilos.ThreadColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Creo un arraylist vacío llamado buffer.
@@ -27,10 +28,11 @@ public class Main {
 
     public static void main(String[] args) {
         List<String> buffer = new ArrayList<>();
+        ReentrantLock bufferLock = new ReentrantLock();
 
-        MyProducer p = new MyProducer(buffer, ThreadColor.ANSI_RED);
-        MyConsumer c1 = new MyConsumer(buffer,ThreadColor.ANSI_BLUE);
-        MyConsumer c2 = new MyConsumer(buffer,ThreadColor.ANSI_GREEN);
+        MyProducer p = new MyProducer(buffer, ThreadColor.ANSI_RED, bufferLock);
+        MyConsumer c1 = new MyConsumer(buffer,ThreadColor.ANSI_BLUE, bufferLock);
+        MyConsumer c2 = new MyConsumer(buffer,ThreadColor.ANSI_GREEN, bufferLock);
 
         new Thread(p).start();
         new Thread(c1).start();

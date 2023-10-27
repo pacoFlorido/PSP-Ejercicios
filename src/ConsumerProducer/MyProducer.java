@@ -2,6 +2,8 @@ package ConsumerProducer;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Creamos una clase MyProducer, esta clase será un hilo, implementando Runnable.
@@ -21,10 +23,12 @@ import java.util.Random;
 public class MyProducer implements Runnable{
     private List<String> buffer;
     private String color;
+    private ReentrantLock bufferLock;
 
-    public MyProducer(List<String> buffer, String color) {
+    public MyProducer(List<String> buffer, String color, ReentrantLock bufferLock) {
         this.buffer = buffer;
         this.color = color;
+        this.bufferLock = bufferLock;
     }
 
     @Override
@@ -34,9 +38,14 @@ public class MyProducer implements Runnable{
 
         for (String n : nums){
             System.out.println(color + "Ading..." + n);
-            synchronized (buffer){
+
+            bufferLock.lock();
+            try {
                 buffer.add(n);
+            } finally {
+                bufferLock.unlock();
             }
+
             try {
                 Thread.sleep(random.nextInt(1000));
             } catch (InterruptedException e) {
@@ -45,10 +54,13 @@ public class MyProducer implements Runnable{
         }
         System.out.println(color + "Final de fichero");
 
-        synchronized (buffer){
+        bufferLock.lock();
+        try {
             buffer.add("-1");
+        } finally {
+            bufferLock.unlock();
         }
-        System.out.println(buffer);
 
+        System.out.println(buffer);
     }
 }

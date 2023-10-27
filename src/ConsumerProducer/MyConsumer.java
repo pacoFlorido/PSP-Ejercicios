@@ -1,6 +1,7 @@
 package ConsumerProducer;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Clase MyCOnsumer
@@ -19,25 +20,30 @@ import java.util.List;
 public class MyConsumer implements Runnable{
     private List<String> buffer;
     private String color;
+    private ReentrantLock bufferLock;
 
-    public MyConsumer(List<String> buffer, String color) {
+    public MyConsumer(List<String> buffer, String color, ReentrantLock bufferLock) {
         this.buffer = buffer;
         this.color = color;
+        this.bufferLock = bufferLock;
     }
 
     @Override
     public void run() {
         while (true){
-            synchronized (buffer){
-                if (buffer.isEmpty()){
+            bufferLock.lock();
+            try {
+                if (buffer.isEmpty()) {
                     continue;
                 }
-                if(buffer.get(0).equals("-1")){
+                if (buffer.get(0).equals("-1")) {
                     System.out.println(color + "Final de Fichero");
                     break;
                 } else {
                     System.out.println(color + "Mostrando y eliminando..." + buffer.remove(0));
                 }
+            } finally {
+                bufferLock.unlock();
             }
         }
     }

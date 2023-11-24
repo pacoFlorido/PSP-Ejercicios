@@ -31,6 +31,7 @@ public class MyConsumer implements Runnable{
     @Override
     public void run() {
         while (true){
+            // bufferLock.getQueueLength(); Obtiene la cantidad de hilos que hay esperando
             bufferLock.lock();
             try {
                 if (buffer.isEmpty()) {

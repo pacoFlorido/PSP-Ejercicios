@@ -27,6 +27,16 @@ public class Counter implements Runnable{
  * - T submit(Callable<T> c) --> devuelve un Future de tipo <T>
  * - invokeAll(List<Callable<T> taskList> --> devuelve una lista de Future<T> = List<Future<T>>
  * - invokeAny(List<Callable<T>> taskList) --> devuelve T
+ *
+ * ScheduledExecutorsService scheduled = Executors.
+ * -newSingleThreadScheduledExecutor
+ * -newScheduledThreadPool
+ *
+ *
+ * --Métodos para ejecutar tareas
+ * -scheduled: ejecuta una tarea una sola vez, delay
+ * -scheduleWithFixedDelay: ejecuta la tarea pariodicamente, (initialDelay, delay)
+ * -scheduleAtFixedRate: ejecuta la tarea periodicamente, (initialDelay, delay)
  */
 class MainExecutor {
     public static void main(String[] args) {
@@ -76,10 +86,6 @@ class MainExecutor {
         }
 
     }
-
-
-
-
 
     public static int sum (int start, int end, int increment, String color){
         int sum = 0;

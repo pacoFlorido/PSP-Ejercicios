@@ -14,15 +14,31 @@ public class Schedule {
                 FormatStyle.LONG
         );
         // TimeUnit.SECONDS.sleep(2);
-        Callable<ZonedDateTime> task = ZonedDateTime::now;
+        Runnable task = () -> {
+            try {
+                TimeUnit.SECONDS.sleep(1L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(ZonedDateTime.now().format(dtf) + "   11111");
+        };
+        Runnable task2 = () -> {
+            try {
+                TimeUnit.SECONDS.sleep(1L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(ZonedDateTime.now().format(dtf) + "   22222");
+        };
         // Quiero ejecutar esa tarea concurrentemente 4 veces al mismo tiempo
         ExecutorService executorS = Executors.newSingleThreadExecutor();
         ExecutorService executor = Executors.newFixedThreadPool(4);
         ExecutorService executorService = Executors.newCachedThreadPool();
 
 
-        // Lista de tareas
+        /*// Lista de tareas
         List<Callable<ZonedDateTime>> taskList = List.of(task,task,task,task);
+
         try {
             System.out.println("Ahora sin Schedule: " + ZonedDateTime.now().format(dtf));
 
@@ -36,10 +52,25 @@ public class Schedule {
             executor.shutdown();
         }
 
+         */
+
+
+
         System.out.println("Ahora con Schedule: " + ZonedDateTime.now().format(dtf));
 
 
-        ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(4);
+        ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(2);
+        ScheduledFuture<?> result = scheduled.scheduleAtFixedRate(task,5L,2L,TimeUnit.SECONDS);
+        ScheduledFuture<?> rr = scheduled.scheduleWithFixedDelay(task2,5L,2L,TimeUnit.SECONDS);
+        try {
+            System.out.println(result.get());
+            System.out.println(rr.get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        scheduled.shutdown();
 
 
 
